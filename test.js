@@ -10,3 +10,6 @@ canvas.placeItem(oval, 3, 5);
 
 canvas.placeItem(oval, 4, 4, true);
 oval.rotateClockwise(-15);
+
+var robot = new Robot();
+canvas.placeItem(robot, 1, 1);

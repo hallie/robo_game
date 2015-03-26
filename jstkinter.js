@@ -218,6 +218,25 @@ function Oval(x_radius, y_radius, color) {
 //Curve
 //MakeColor
 
+//Robot
+function Robot() {
+    var body = new Circle(30, 'green');
+    
+    var left_eye = new Circle(5, 'white');
+    left_eye.style.position = 'absolute';
+    left_eye.style.top = '20%';
+    left_eye.style.left = '75%';
+    body.appendChild(left_eye);
+    
+    var right_eye = new Circle(5, 'white');
+    right_eye.style.position = 'absolute';
+    right_eye.style.top = '55%';
+    right_eye.style.left = '75%';
+    body.appendChild(right_eye);
+    
+    return body;
+}
+
 //Rotate
 HTMLDivElement.prototype.rotateClockwise = function(degrees) {
     var div = this;

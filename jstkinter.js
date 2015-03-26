@@ -152,26 +152,31 @@ Canvas.prototype.makeGrid = function(columns, rows) {
  * @param {HTMLDivElement} item
  * @param {number} height
  * @param {number} width
- * @param {string} [what_do='nothing']
+ * @param {string} [corner=false]
  **/
-Canvas.prototype.placeItem = function(item, width, height, what_do) {
-    what_do = what_do || 'nothing';
+Canvas.prototype.placeItem = function(item, width, height, corner) {
+    corner = corner || false;
     if (this.isGrid) {
         var i_height = (item.style.height).toInt();
         var i_width = (item.style.width).toInt();
         
-        if (what_do == 'corner') {}
+        if (corner) {
+            var top = 0 - (i_height / 2);
+            top += ((height-1) * this.square_size[1]);
+            var left = 0 - (i_width / 2);
+            left += ((width-1) * this.square_size[0]);
+        }
         else {
             var left = (this.square_size[0] - i_width) / 2;
             left += ((width-1) * this.square_size[0]);
             var top = (this.square_size[1] - i_height) / 2;
             top += ((height-1) * this.square_size[1]);
-            
-            item.style.left = (left + pad).css_px();
-            item.style.top = (top + pad).css_px();
-            
-            this.div.appendChild(item);
         }
+        
+        item.style.left = (left + pad).css_px();
+        item.style.top = (top + pad).css_px();
+            
+        this.div.appendChild(item);
     }
     else {
         item.style.top = height;
@@ -212,3 +217,16 @@ function Oval(x_radius, y_radius, color) {
 //Line
 //Curve
 //MakeColor
+
+//Rotate
+HTMLDivElement.prototype.rotateClockwise = function(degrees) {
+    var div = this;
+    
+    div.style.webkitTransform = 'rotate(' + degrees + 'deg)'; 
+    div.style.mozTransform    = 'rotate(' + degrees + 'deg)'; 
+    div.style.msTransform     = 'rotate(' + degrees + 'deg)'; 
+    div.style.oTransform      = 'rotate(' + degrees + 'deg)'; 
+    div.style.transform       = 'rotate(' + degrees + 'deg)';
+    
+    div.parentNode.appendChild(div);
+}

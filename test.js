@@ -8,4 +8,5 @@ canvas.placeItem(circle, 2, 3);
 var oval = new Oval(30, 20, 'grey');
 canvas.placeItem(oval, 3, 5);
 
-canvas.placeItem(oval, 4, 4);
+canvas.placeItem(oval, 4, 4, true);
+oval.rotateClockwise(-15);

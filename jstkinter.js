@@ -26,7 +26,7 @@ Number.prototype.css_px = function(number) {
  **/
 String.prototype.toInt = function() {
     var string = this.substr(0, this.length-2);
-    return parseInt(string);
+    return parseFloat(string);
 }
 
 /**
@@ -52,8 +52,9 @@ function Canvas(id, color, height, width) {
     
     div.style.height = height;
     div.style.width = width;
-    div.style.top = '8px';
-    div.style.left = '8px';
+    div.style.top = '10px';
+    div.style.left = '10px';
+    div.style.position = 'fixed';
     
     
     div.style.background = color || 'whitesmoke';
@@ -63,14 +64,25 @@ function Canvas(id, color, height, width) {
     wrap.appendChild(div);
     
     this.div = div;
+    this.grid = [];
 }
 
 /**
- *  Returns the ID of a Canvas type
+ * Adds a title bar to the canvas
+ * @param {string} title
  **/
-Canvas.prototype.getID = function() {
-    return this.div.getAttribute('id');
-};
+Canvas.prototype.makeHeader = function(title) {
+    var bar = document.createElement('div');
+    bar.style.position = 'fixed';
+    bar.style.width = this.div.width;
+    bar.style.height = '50px';
+    bar.style.background = 'black';
+    bar.style.color = 'white';
+    bar.innerHTML = title;
+    
+    this.div.top = '50px';
+    wrap.appendChild(bar);
+}
 
 /**
  * Makes the cavas into a grid
@@ -86,6 +98,10 @@ Canvas.prototype.makeGrid = function(columns, rows) {
     var col_space = width / columns;
     var row_space = height / rows;
     
+    this.isGrid = true;
+    this.dimensions = [columns, rows];
+    this.square_size = [col_space, row_space];
+    
     this.addVertLine = function(space) {
         vert_line = document.createElement('div');
         
@@ -97,6 +113,7 @@ Canvas.prototype.makeGrid = function(columns, rows) {
         vert_line.setAttribute('class', 'grid');
         
         this.div.appendChild(vert_line);
+        this.grid.push(vert_line);
     }
     
     this.addHorLine = function(space) {
@@ -110,6 +127,7 @@ Canvas.prototype.makeGrid = function(columns, rows) {
         hor_line.setAttribute('class', 'grid');
         
         this.div.appendChild(hor_line);
+        this.grid.push(hor_line);
     }
     
     var d_left = (this.div.style.left).toInt();
@@ -121,12 +139,16 @@ Canvas.prototype.makeGrid = function(columns, rows) {
     for (var i = 0; i <= rows; i++) {
         this.addHorLine((i * row_space) + d_top);
     }
-    
-    this.isGrid = true;
-    this.dimensions = [columns, rows];
-    this.square_size = [col_space, row_space];
 }
 
+/**
+ * Function for removing the grid from the canvas
+ **/
+Canvas.prototype.removeGrid = function() {
+    while (this.grid.length > 0) {
+        this.div.removeChild(this.grid.pop());
+    }
+}
 
 
 //Button
@@ -155,6 +177,9 @@ Canvas.prototype.makeGrid = function(columns, rows) {
  * @param {string} [corner=false]
  **/
 Canvas.prototype.placeItem = function(item, width, height, corner) {
+    if (item.constructor == Robot) {
+        item = item.bot;
+    }
     corner = corner || false;
     if (this.isGrid) {
         var i_height = (item.style.height).toInt();
@@ -234,7 +259,105 @@ function Robot() {
     right_eye.style.left = '75%';
     body.appendChild(right_eye);
     
-    return body;
+    this.bot = body;
+    this.direction = 'right';
+}
+
+/**
+ * Function for moving the robot 'forward' to the next point in the grid.
+ **/
+Robot.prototype.moveForward = function(canvas) {
+    var bot = this.bot;
+    var start_x = bot.style.left.toInt();
+    var start_y = bot.style.top.toInt();
+    var dir, goal;
+    
+    l_r = function() {
+        bot.style.left = (start_x + dir).css_px();
+    }
+    u_d = function() {
+        bot.style.top = (start_y + dir).css_px();
+    }
+    
+    if (this.direction == 'left') {
+        goal = start_x - canvas.square_size[0];
+        if (goal > 0) {
+            dir = (canvas.square_size[0] * -1);
+            l_r(dir);
+        }
+        else {
+            console.log("Cannot move forward!");
+        }
+    }
+    else if (this.direction == 'right') {
+        goal = start_x + canvas.square_size[0];
+        console.log(goal, canvas.div.style.width.toInt());
+        if (goal < canvas.div.style.width.toInt()) {
+            dir = canvas.square_size[0];
+            l_r(dir);
+        }
+        else {
+            console.log("Cannot move forward!");
+        }
+    }
+    else if (this.direction == 'up') {
+        goal = start_y - canvas.square_size[1];
+        if (goal > 0) {
+            dir = (canvas.square_size[0] * -1);
+            u_d(dir);
+        }
+        else {
+            console.log("Cannot move forward!");
+        }
+    }
+    else {
+        goal = start_y + canvas.square_size[1];
+        if (goal < canvas.div.style.width.toInt()) {
+            dir = canvas.square_size[1];
+            u_d(dir);
+        }
+        else {
+            console.log("Cannot move forward!");
+        }
+    }
+}
+
+Robot.prototype.moveOnce = function() {
+    var robot = this;
+    var i = 0, steps = 1;
+    var move = setInterval(function() {
+        if (i < steps) {
+            robot.moveForward(canvas);
+            i++;
+        }
+        else {
+            clearInterval(move);
+            i = 0;
+        }
+    }, 1000);
+}
+
+var directions = ['right', 'down', 'left', 'up'];
+
+Robot.prototype.turnRight = function() {
+    var d = directions.indexOf(this.direction);
+    d = (d+1)%4;
+    this.direction = directions[d];
+    this.bot.rotateClockwise(90);
+}
+
+Robot.prototype.turnLeft = function() {
+    var d = directions.indexOf(this.direction);
+    d = (d+1)%4;
+    this.direction = directions[d];
+    this.bot.rotateClockwise(-90);
+}
+
+Robot.prototype.turnAround = function() {
+    var d = directions.indexOf(this.direction);
+    d = (d+1)%4;
+    this.direction = directions[d];
+    this.bot.rotateClockwise(180);
 }
 
 //Rotate

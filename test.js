@@ -1,6 +1,7 @@
 var canvas = new Canvas(null, null, 500, 500);
 
 canvas.makeGrid(7);
+//canvas.makeHeader("RoboGame");
 
 var circle = new Circle(20);
 canvas.placeItem(circle, 2, 3);
@@ -12,4 +13,23 @@ canvas.placeItem(oval, 4, 4, true);
 oval.rotateClockwise(-15);
 
 var robot = new Robot();
-canvas.placeItem(robot, 1, 1);
+canvas.placeItem(robot, 3, 3);
+
+/*
+setTimeout(
+    function() {
+        robot.moveForwardOnce(canvas);
+    },
+    1000
+);
+setTimeout(
+    function() {
+        robot.moveForwardOnce(canvas);
+    },
+    1000
+);
+*/
+
+robot.moveOnce();
+robot.moveOnce();
+robot.turnLeft();

@@ -6,11 +6,10 @@ canvas.makeGrid(7);
 var circle = new Circle(20);
 canvas.placeItem(circle, 2, 3);
 
-var oval = new Oval(30, 20, 'grey');
-canvas.placeItem(oval, 3, 5);
+var req = new Rectangle(30, 20, 'grey');
+//canvas.placeItem(req, 3, 5);
 
-canvas.placeItem(oval, 4, 4, true);
-oval.rotateClockwise(-15);
+canvas.placeItem(req, 4, 4, true);
 
 var robot = new Robot();
 canvas.placeItem(robot, 3, 3);

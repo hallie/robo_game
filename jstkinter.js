@@ -238,7 +238,28 @@ function Oval(x_radius, y_radius, color) {
 }
 
 //Square
+function Square(height, color) {
+    height = height || 50;
+    var square = document.createElement('div');
+    square.style.position = 'fixed';
+    square.style.background = color || 'black';
+    square.style.height = height.css_px();
+    square.style.width = height.css_px();
+    
+    return square;
+}
+
 //Rectangle
+function Rectangle(height, width, color) {
+    var rectangle = document.createElement('div');
+    rectangle.style.position = 'fixed';
+    rectangle.style.background = color || 'black';
+    rectangle.style.height = (height || 50).css_px();
+    rectangle.style.width = (width || 50).css_px();
+    
+    return rectangle;
+}
+
 //Line
 //Curve
 //MakeColor

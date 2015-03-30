@@ -97,23 +97,26 @@ var directions = ['right', 'down', 'left', 'up'];
 Robot.prototype.turnRight = function() {
     var d = directions.indexOf(this.direction);
     d = (d+1)%4;
+    var deg = d * 90;
     this.direction = directions[d];
-    this.bot.rotateClockwise(90);
+    this.bot.rotateClockwise(deg);
     console.log(d, directions[d]);
 }
 
 Robot.prototype.turnLeft = function() {
     var d = directions.indexOf(this.direction);
     d = (d+1)%4;
+    var deg = d * 90;
     this.direction = directions[d];
-    this.bot.rotateClockwise(90);
+    this.bot.rotateClockwise(deg);
     console.log(this.bot, d, directions[d]);
 }
 
 Robot.prototype.turnAround = function() {
     var d = directions.indexOf(this.direction);
     d = (d+1)%4;
+    var deg = d * 90;
     this.direction = directions[d];
-    this.bot.rotateClockwise(90);
+    this.bot.rotateClockwise(deg);
     console.log(d, directions[d]);
 }

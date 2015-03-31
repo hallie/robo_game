@@ -26,7 +26,7 @@ String.prototype.toInt = function() {
  * @param {number} [width=500]
  * @param {bool} [grid=false]
  **/
-function Canvas(id, color, height, width, grid) {
+function Canvas(id, color, height, width) {
     CANVAS_ID = id || 'canvas';
     var catchCanvasError = function(param) {
         if (typeof param == 'number') {
@@ -55,6 +55,8 @@ function Canvas(id, color, height, width, grid) {
     
     this.div = div;
     this.grid = [];
+    this.grid_x = [];
+    this.grid_y = [];
 }
 
 /**
@@ -104,6 +106,7 @@ Canvas.prototype.makeGrid = function(columns, rows) {
         
         this.div.appendChild(vert_line);
         this.grid.push(vert_line);
+        this.grid_x.push(vert_line.style.left);
     }
     
     this.addHorLine = function(space) {
@@ -118,6 +121,7 @@ Canvas.prototype.makeGrid = function(columns, rows) {
         
         this.div.appendChild(hor_line);
         this.grid.push(hor_line);
+        this.grid_y.push(hor_line.style.top);
     }
     
     var d_left = (this.div.style.left).toInt();

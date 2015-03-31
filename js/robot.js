@@ -1,3 +1,9 @@
+var board;
+
+function setBoard(canvas) {
+    board = canvas;
+}
+
 //Robot
 function Robot() {
     var body = new Circle(30, 'green');
@@ -18,78 +24,80 @@ function Robot() {
     this.direction = 'right';
 }
 
+Robot.prototype.placeBot = function(height, width) {
+    this.position = [height, width];
+    board.placeItem(this, height, width, true);
+}
+
+
+/**
+ * Checks if the robot can move forward
+ **/
+Robot.prototype.canMove = function() {
+    console.log(this.direction);
+    var x = board.grid_x;
+    var y = board.grid_y;
+    
+    switch(this.direction) {
+        case "left":
+            if (this.position[0] > 0) {
+                return true;
+            }
+            break;
+        case "right":
+            if (this.position[0] < x.length) {
+                return true;
+            }
+            break;
+        case "up":
+            if (this.position[1] > 0) {
+                return true;
+            }
+            break;
+        default:
+            if (this.position[1] < y.length) {
+                return true;
+            }
+    }
+    
+    return false;
+}
+
 /**
  * Function for moving the robot 'forward' to the next point in the grid.
  **/
-Robot.prototype.moveForward = function(canvas) {
-    var bot = this.bot;
-    var start_x = bot.style.left.toInt();
-    var start_y = bot.style.top.toInt();
-    var dir, goal;
+Robot.prototype.moveForward = function() {
+    var x = board.grid_x;
+    var y = board.grid_y;
     
-    l_r = function() {
-        $(bot).animate({left: '+=' + dir.css_px()}, 500);
-    }
-    u_d = function() {
-        $(bot).animate({top: '+=' + dir.css_px()}, 500);
-    }
+    var sx = board.square_size[0];
+    var sy = board.square_size[1];
     
-    if (this.direction == 'left') {
-        goal = start_x - canvas.square_size[0];
-        if (goal > 0) {
-            dir = (canvas.square_size[0] * -1);
-            l_r(dir);
-        }
-        else {
-            console.log("Cannot move forward!");
-        }
+    switch(this.direction) {
+        case "left":
+            if (this.position[0] < x.length-1) {
+                $(this.bot).animate({left: '-=' + sx.css_px()}, 500);
+                this.position[0] -= 1;
+            }
+            break;
+        case "right":
+            if (this.position[0] > 0) {
+                $(this.bot).animate({left: '+=' + sx.css_px()}, 500);
+                this.position[0] += 1;
+            }
+            break;
+        case "up":
+            if (this.position[1] < y.length-1) {
+                $(this.bot).animate({left: '-=' + sx.css_px()}, 500);
+                this.position[1] -= 1;
+            }
+            break;
+        default:
+            if (this.position[1] > 0) {
+                $(this.bot).animate({left: '+=' + sx.css_px()}, 500);
+                this.position[1] += 1;
+            }
     }
-    else if (this.direction == 'right') {
-        goal = start_x + canvas.square_size[0];
-        console.log(goal, canvas.div.style.width.toInt());
-        if (goal < canvas.div.style.width.toInt()) {
-            dir = canvas.square_size[0];
-            l_r(dir);
-        }
-        else {
-            console.log("Cannot move forward!");
-        }
-    }
-    else if (this.direction == 'up') {
-        goal = start_y - canvas.square_size[1];
-        if (goal > 0) {
-            dir = (canvas.square_size[0] * -1);
-            u_d(dir);
-        }
-        else {
-            console.log("Cannot move forward!");
-        }
-    }
-    else {
-        goal = start_y + canvas.square_size[1];
-        if (goal < canvas.div.style.width.toInt()) {
-            dir = canvas.square_size[1];
-            u_d(dir);
-        }
-        else {
-            console.log("Cannot move forward!");
-        }
-    }
-}
-
-Robot.prototype.moveOnce = function() {
-    var robot = this;
-    var i = 0, steps = 1;
-    var move = setInterval(function() {
-        if (i < steps) {
-            robot.moveForward(canvas);
-            i++;
-        }
-        else {
-            clearInterval(move);
-            i = 0;
-        }
-    }, 1000);
 }
 
 var directions = ['right', 'down', 'left', 'up'];
@@ -98,6 +106,7 @@ Robot.prototype.turnRight = function() {
     var d = directions.indexOf(this.direction);
     d = (d+1)%4;
     var deg = d * 90;
+    console.log(directions[d], d);
     this.direction = directions[d];
     this.bot.rotateClockwise(deg);
     console.log(d, directions[d]);

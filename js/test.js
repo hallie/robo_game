@@ -2,21 +2,19 @@ var level_1 = [
     ['r','-','-','-','-','-'],
     ['*','*','*','*','-','*'],
     ['-','-','-','-','-','-'],
-    ['-','-','-','-','-','-'],
+    ['-','-','p','-','-','-'],
     ['-','-','-','-','-','-'],
     ['-','p','-','-','d','-']
 ];
 
-
-var canvas = new Canvas(null, null, 500, 500);
-setBoard(canvas);
-
-var robot = canvas.makeGameBoard(level_1);
+var robot = makeGameBoard(level_1);
+console.log(robot);
 
 $(document).ready(function() {
     console.log($("#wrap").height(), $("#wrap").width());
-    console.log($("#canvas").height(), $("#canvas").width());
-    console.log(canvas.grid);
+    $("#canvas").attr("top", "100px").attr("left", "100px");
+    console.log($("#canvas").attr("top"), $("#canvas").attr("left"));
+    console.log(board.grid);
     
     while(robot.canMove()) {
         robot.moveForward();

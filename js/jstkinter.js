@@ -3,20 +3,24 @@
  *  Created on March 23, 2015 by Hallie Lomax
  **/
 
+var wrap;
+
 /**
  * Converts a number to a px string.
  **/
-Number.prototype.css_px = function() {
+Number.prototype.css_px = function () {
+    "use strict";
     return this.toString() + 'px';
-}
+};
 
 /**
  * Converts a px string to an integer.
  **/
-String.prototype.toInt = function() {
-    var string = this.substr(0, this.length-2);
+String.prototype.toInt = function () {
+    "use strict";
+    var string = this.substr(0, this.length - 2);
     return parseFloat(string);
-}
+};
 
 /**
  * Function for creating the canvas on which the user will be drawing.
@@ -27,18 +31,20 @@ String.prototype.toInt = function() {
  * @param {bool} [grid=false]
  **/
 function Canvas(id, color, height, width) {
-    CANVAS_ID = id || 'canvas';
-    var catchCanvasError = function(param) {
-        if (typeof param == 'number') {
+    "use strict";
+    id = id || 'canvas';
+    
+    function catchCanvasError(param) {
+        if (typeof param === 'number') {
             return param.css_px();
         }
         return '500px';
     }
     var div = document.createElement("div");
-    div.setAttribute('id', CANVAS_ID);
+    div.setAttribute('id', id);
     
-    var height = catchCanvasError(height);
-    var width = catchCanvasError(width);
+    height = catchCanvasError(height);
+    width = catchCanvasError(width);
     
     div.style.height = height;
     div.style.width = width;
@@ -51,7 +57,7 @@ function Canvas(id, color, height, width) {
     div.style.border = color || 'black';
     div.style.borderRadius = '2px';
     
-    wrap.appendChild(div);
+    document.getElementById("wrap").appendChild(div);
     
     this.div = div;
     this.grid = [];
@@ -63,7 +69,8 @@ function Canvas(id, color, height, width) {
  * Adds a title bar to the canvas
  * @param {string} title
  **/
-Canvas.prototype.makeHeader = function(title) {
+Canvas.prototype.makeHeader = function (title) {
+    "use strict";
     var bar = document.createElement('div');
     bar.style.position = 'fixed';
     bar.style.width = this.div.width;
@@ -74,28 +81,34 @@ Canvas.prototype.makeHeader = function(title) {
     
     this.div.top = '50px';
     wrap.appendChild(bar);
-}
+};
 
 /**
  * Makes the cavas into a grid
  * @param {number} [columns=5]
  * @param {number} [rows=5]
  **/
-Canvas.prototype.makeGrid = function(columns, rows) {
+Canvas.prototype.makeGrid = function (columns, rows) {
+    "use strict";
+    var height, width,
+        col_space, row_space,
+        d_left, d_top,
+        counter;
+    
     columns = columns || 5;
     rows = rows || columns;
-    var height = (this.div.style.height).toInt();
-    var width = (this.div.style.width).toInt();
+    height = (this.div.style.height).toInt();
+    width = (this.div.style.width).toInt();
     
-    var col_space = width / columns;
-    var row_space = height / rows;
+    col_space = width / columns;
+    row_space = height / rows;
     
     this.isGrid = true;
     this.dimensions = [columns, rows];
     this.square_size = [col_space, row_space];
     
-    this.addVertLine = function(space) {
-        vert_line = document.createElement('div');
+    this.addVertLine = function (space) {
+        var vert_line = document.createElement('div');
         
         vert_line.style.height = height + 2;
         vert_line.style.width = '2px';
@@ -107,10 +120,10 @@ Canvas.prototype.makeGrid = function(columns, rows) {
         this.div.appendChild(vert_line);
         this.grid.push(vert_line);
         this.grid_x.push(vert_line.style.left);
-    }
+    };
     
-    this.addHorLine = function(space) {
-        hor_line = document.createElement('div');
+    this.addHorLine = function (space) {
+        var hor_line = document.createElement('div');
         
         hor_line.style.width = width + 2;
         hor_line.style.height = '2px';
@@ -122,27 +135,28 @@ Canvas.prototype.makeGrid = function(columns, rows) {
         this.div.appendChild(hor_line);
         this.grid.push(hor_line);
         this.grid_y.push(hor_line.style.top);
+    };
+    
+    d_left = (this.div.style.left).toInt();
+    for (counter = 0; counter <= columns; counter += 1) {
+        this.addVertLine((counter * col_space) + d_left);
     }
     
-    var d_left = (this.div.style.left).toInt();
-    for (var i = 0; i <= columns; i++) {
-        this.addVertLine((i * col_space) + d_left);
+    d_top = (this.div.style.top).toInt();
+    for (counter = 0; counter <= rows; counter += 1) {
+        this.addHorLine((counter * row_space) + d_top);
     }
-    
-    var d_top = (this.div.style.top).toInt();
-    for (var i = 0; i <= rows; i++) {
-        this.addHorLine((i * row_space) + d_top);
-    }
-}
+};
 
 /**
  * Function for removing the grid from the canvas
  **/
-Canvas.prototype.removeGrid = function() {
+Canvas.prototype.removeGrid = function () {
+    "use strict";
     while (this.grid.length > 0) {
         this.div.removeChild(this.grid.pop());
     }
-}
+};
 
 
 //Button
@@ -170,69 +184,72 @@ Canvas.prototype.removeGrid = function() {
  * @param {number} width
  * @param {string} [corner=false]
  **/
-Canvas.prototype.placeItem = function(item, width, height, corner) {
-    if (item.constructor == Robot) {
+Canvas.prototype.placeItem = function (item, width, height, corner) {
+    "use strict";
+    if (item.constructor === Robot) {
         item = item.bot;
     }
     corner = corner || false;
+    var top, left, i_height, i_width;
     if (this.isGrid) {
-        var i_height = (item.style.height).toInt();
-        var i_width = (item.style.width).toInt();
+        i_height = (item.style.height).toInt();
+        i_width = (item.style.width).toInt();
         
         if (corner) {
-            var top = 0 - (i_height / 2);
-            top += ((height-1) * this.square_size[1]);
-            var left = 0 - (i_width / 2);
-            left += ((width-1) * this.square_size[0]);
-        }
-        else {
-            var left = (this.square_size[0] - i_width) / 2;
-            left += ((width-1) * this.square_size[0]);
-            var top = (this.square_size[1] - i_height) / 2;
-            top += ((height-1) * this.square_size[1]);
+            top = -1 * (i_height / 2);
+            top += ((height - 1) * this.square_size[1]);
+            left = -1 * (i_width / 2);
+            left += ((width - 1) * this.square_size[0]);
+        } else {
+            left = (this.square_size[0] - i_width) / 2;
+            left += ((width - 1) * this.square_size[0]);
+            top = (this.square_size[1] - i_height) / 2;
+            top += ((height - 1) * this.square_size[1]);
         }
         
         item.style.left = left.css_px();
         item.style.top = top.css_px();
             
         this.div.appendChild(item);
-    }
-    else {
+    } else {
         item.style.top = height;
         item.style.left = width;
         this.div.appendChild(item);
     }
-}
+};
 
 //Circle
 function Circle(radius, color) {
+    "use strict";
     radius = radius || 50;
     var circle = document.createElement('div');
     circle.style.position = 'fixed';
     circle.style.background = color || 'red';
     circle.style.borderRadius = '50%';
-    circle.style.height = (radius*2).css_px();
-    circle.style.width = (radius*2).css_px();
+    circle.style.height = (radius * 2).css_px();
+    circle.style.width = (radius * 2).css_px();
     
     return circle;
 }
 
 //Oval
 function Oval(x_radius, y_radius, color) {
+    "use strict";
     x_radius = x_radius || 50;
     y_radius = y_radius || x_radius;
     var oval = document.createElement('div');
     oval.style.position = 'fixed';
     oval.style.background = color || 'red';
     oval.style.borderRadius = '50%';
-    oval.style.height = (y_radius*2).css_px();
-    oval.style.width = (x_radius*2).css_px();
+    oval.style.height = (y_radius * 2).css_px();
+    oval.style.width = (x_radius * 2).css_px();
     
     return oval;
 }
 
 //Square
 function Square(height, color) {
+    "use strict";
     height = height || 50;
     var square = document.createElement('div');
     square.style.position = 'fixed';
@@ -245,6 +262,7 @@ function Square(height, color) {
 
 //Rectangle
 function Rectangle(height, width, color) {
+    "use strict";
     var rectangle = document.createElement('div');
     rectangle.style.position = 'fixed';
     rectangle.style.background = color || 'black';
@@ -259,14 +277,15 @@ function Rectangle(height, width, color) {
 //MakeColor
 
 //Rotate
-HTMLDivElement.prototype.rotateClockwise = function(degrees) {
+HTMLDivElement.prototype.rotateClockwise = function (degrees) {
+    "use strict";
     var div = this;
     
-    div.style.webkitTransform = 'rotate(' + degrees + 'deg)'; 
-    div.style.mozTransform    = 'rotate(' + degrees + 'deg)'; 
-    div.style.msTransform     = 'rotate(' + degrees + 'deg)'; 
-    div.style.oTransform      = 'rotate(' + degrees + 'deg)'; 
+    div.style.webkitTransform = 'rotate(' + degrees + 'deg)';
+    div.style.mozTransform    = 'rotate(' + degrees + 'deg)';
+    div.style.msTransform     = 'rotate(' + degrees + 'deg)';
+    div.style.oTransform      = 'rotate(' + degrees + 'deg)';
     div.style.transform       = 'rotate(' + degrees + 'deg)';
     
     div.parentNode.appendChild(div);
-}
+};

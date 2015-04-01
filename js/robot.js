@@ -1,5 +1,14 @@
+/**
+ * File for handling the creation and the actions of the robot, using what I
+ *   defined in jskinter.js
+ **/
+
 var board;
 
+/**
+ * Sets the board used in the implementation of board.js equal to whatever
+ *   canvas is passed through this function.
+ **/
 function setBoard(canvas) {
     "use strict";
     board = canvas;

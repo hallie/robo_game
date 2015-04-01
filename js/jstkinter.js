@@ -48,10 +48,6 @@ function Canvas(id, color, height, width) {
     
     div.style.height = height;
     div.style.width = width;
-    div.style.top = 0;
-    div.style.left = 0;
-    div.style.position = 'absolute';
-    
     
     div.style.background = color || 'whitesmoke';
     div.style.border = color || 'black';
@@ -60,7 +56,6 @@ function Canvas(id, color, height, width) {
     document.getElementById("wrap").appendChild(div);
     
     this.div = div;
-    this.grid = [];
     this.grid_x = [];
     this.grid_y = [];
 }
@@ -93,7 +88,11 @@ Canvas.prototype.makeGrid = function (columns, rows) {
     var height, width,
         col_space, row_space,
         d_left, d_top,
-        counter;
+        counter,
+        top_pad, left_pad;
+    
+    left_pad = this.div.getBoundingClientRect().left;
+    top_pad = this.div.getBoundingClientRect().top;
     
     columns = columns || 5;
     rows = rows || columns;
@@ -108,43 +107,45 @@ Canvas.prototype.makeGrid = function (columns, rows) {
     this.square_size = [col_space, row_space];
     
     this.addVertLine = function (space) {
-        var vert_line = document.createElement('div');
+        var last,
+            vert_line = document.createElement('div');
         
-        vert_line.style.height = height + 2;
+        vert_line.style.height = (height + 2).css_px();
         vert_line.style.width = '2px';
         vert_line.style.background = 'black';
         vert_line.style.position = 'absolute';
-        vert_line.style.left = space.css_px();
+        vert_line.style.left = (space).css_px();
         vert_line.setAttribute('class', 'grid');
         
         this.div.appendChild(vert_line);
-        this.grid.push(vert_line);
-        this.grid_x.push(vert_line.style.left);
+        this.grid_x.push(vert_line);
     };
     
     this.addHorLine = function (space) {
-        var hor_line = document.createElement('div');
+        var last_pos = 0,
+            hor_line = document.createElement('div');
         
-        hor_line.style.width = width + 2;
+        if (this.grid_y.length > 0) {
+            last_pos = this.grid_y[this.grid_y.length - 1];
+        }
+        
+        hor_line.style.width = (width + 2).css_px();
         hor_line.style.height = '2px';
         hor_line.style.background = 'black';
-        hor_line.style.position = 'fixed';
-        hor_line.style.top = space.css_px();
+        hor_line.style.position = 'absolute';
+        hor_line.style.top = (space).css_px();
         hor_line.setAttribute('class', 'grid');
         
         this.div.appendChild(hor_line);
-        this.grid.push(hor_line);
-        this.grid_y.push(hor_line.style.top);
+        this.grid_y.push(hor_line);
     };
     
-    d_left = (this.div.style.left).toInt();
     for (counter = 0; counter <= columns; counter += 1) {
-        this.addVertLine((counter * col_space) + d_left);
+        this.addVertLine((counter * col_space));
     }
     
-    d_top = (this.div.style.top).toInt();
     for (counter = 0; counter <= rows; counter += 1) {
-        this.addHorLine((counter * row_space) + d_top);
+        this.addHorLine((counter * row_space));
     }
 };
 
@@ -223,7 +224,7 @@ function Circle(radius, color) {
     "use strict";
     radius = radius || 50;
     var circle = document.createElement('div');
-    circle.style.position = 'fixed';
+    circle.style.position = 'absolute';
     circle.style.background = color || 'red';
     circle.style.borderRadius = '50%';
     circle.style.height = (radius * 2).css_px();
@@ -238,7 +239,7 @@ function Oval(x_radius, y_radius, color) {
     x_radius = x_radius || 50;
     y_radius = y_radius || x_radius;
     var oval = document.createElement('div');
-    oval.style.position = 'fixed';
+    oval.style.position = 'absolute';
     oval.style.background = color || 'red';
     oval.style.borderRadius = '50%';
     oval.style.height = (y_radius * 2).css_px();
@@ -252,7 +253,7 @@ function Square(height, color) {
     "use strict";
     height = height || 50;
     var square = document.createElement('div');
-    square.style.position = 'fixed';
+    square.style.position = 'absolute';
     square.style.background = color || 'black';
     square.style.height = height.css_px();
     square.style.width = height.css_px();
@@ -264,7 +265,7 @@ function Square(height, color) {
 function Rectangle(height, width, color) {
     "use strict";
     var rectangle = document.createElement('div');
-    rectangle.style.position = 'fixed';
+    rectangle.style.position = 'absolute';
     rectangle.style.background = color || 'black';
     rectangle.style.height = (height || 50).css_px();
     rectangle.style.width = (width || 50).css_px();

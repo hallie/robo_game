@@ -9,6 +9,8 @@ Canvas.prototype.makeGameBoard = function (level) {
     //Making the level grided based on the length of the matrix
     "use strict";
     this.makeGrid((level.length - 1), (level[0].length - 1));
+    console.log(this.div.parentElement);
+    
     
     //Traversing the matrix to get the layout based on characters
     var bot, drop, pickup, block,
@@ -44,6 +46,5 @@ Canvas.prototype.makeGameBoard = function (level) {
             }
         }
     }
-    console.log(bot);
     return bot;
 };

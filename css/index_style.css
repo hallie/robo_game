@@ -8,11 +8,21 @@ body {
     top: 0;
     left: 0;
     height: 100%;
-    width: 100%;
+    width: 50%;
+    background: #686868;
 }
 
-#wrap div {
+div#canvas {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+}
+
+#not-wrap {
     position: fixed;
-    top: 20%;
-    left: 20%;
+    top: 0;
+    height: 100%;
+    left: 50%;
+    width: 50%;
+    background: #6666CC;
 }

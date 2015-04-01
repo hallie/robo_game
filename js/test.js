@@ -7,19 +7,35 @@ var level_1 = [
     ['-', 'p', '-', '-', 'd', '-']
 ];
 
-var robot = makeGameBoard(level_1);
-console.log(robot);
+var robot;
 
 $(document).ready(function() {
-    console.log($("#wrap").height(), $("#wrap").width());
-    console.log($("#canvas").attr("top"), $("#canvas").attr("left"));
-    console.log($(window).height());
-    
-    while(robot.canMove()) {
-        robot.moveForward();
-    }
+    robot = makeGameBoard(level_1);
 });
 
-$(document).ready(function() {
-    robot.turnRight();
+$(document).ready(function () {
+
 });
+
+/**
+$(document).keydown(function(key) {
+        switch(parseInt(key.which,10)) {
+			// Left arrow key pressed
+			case 37:
+				$(robot.bot).animate({left: "-=10px"}, 'slow');
+				break;
+			// Up Arrow Pressed
+			case 38:
+				$(robot.bot).animate({top: "-=10px"}, 'fast');
+				break;
+			// Right Arrow Pressed
+			case 39:
+			    $(robot.bot).animate({left: "+=10px"}, 'fast');
+				break;
+			// Down Arrow Pressed
+			case 40:
+			    $(robot.bot).animate({top: "+=10px"}, 'fast');
+				break;
+		}
+	});
+**/

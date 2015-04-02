@@ -20,6 +20,7 @@ function Robot() {
     var body, left_eye, right_eye;
     
     body = new Circle(30, 'green');
+    $(body).attr("id", "#robo-bod");
     
     left_eye = new Circle(5, 'white');
     left_eye.style.position = 'absolute';

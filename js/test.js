@@ -14,7 +14,7 @@ $(document).ready(function() {
 });
 
 $(document).ready(function () {
-
+//2658529&Resetcode
 });
 
 /**

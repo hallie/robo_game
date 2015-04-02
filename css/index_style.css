@@ -9,7 +9,7 @@ body {
     left: 0;
     height: 100%;
     width: 50%;
-    background: #686868;
+    background: #660066;
 }
 
 div#canvas {
@@ -25,4 +25,11 @@ div#canvas {
     left: 50%;
     width: 50%;
     background: #6666CC;
+}
+
+#robo-bod {
+    border: 5px solid red;
+    -moz-box-shadow: 3px 3px 5px #777;
+    -webkit-box-shadow: 3px 3px 5px #777;
+    box-shadow: 3px 3px 5px #777;
 }

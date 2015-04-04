@@ -22,6 +22,12 @@ $(document).ready(function () {
     $(document).keydown(function (key) {
         switch (parseInt(key.which, 10)) {
 			// Left arrow key pressed
+        case 68:
+            robot.drop();
+            break;
+        case 80:
+            robot.pickUp();
+            break;
         case 37:
             robot.turnLeft();
             break;

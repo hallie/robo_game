@@ -47,6 +47,7 @@ function Robot() {
     
     this.bot = body;
     this.direction = 'right';
+    this.pickUps = [];
 }
 
 Robot.prototype.placeBot = function (height, width) {
@@ -173,4 +174,48 @@ Robot.prototype.turnAround = function () {
     deg = d * 90;
     this.direction = directions[d];
     this.bot.rotateClockwise(deg);
+};
+
+Robot.prototype.pickUp = function () {
+    "use strict";
+    var x, y, pickup;
+    
+    x = this.position[0] - 1;
+    y = this.position[1] - 1;
+    
+    if (level[y][x] === 'p') {
+        level[y][x] = '-';
+        pickup = new Circle(5, 'blue');
+        pickup.setAttribute('id', 'butt-dot');
+        pickup.style.position = 'absolute';
+        pickup.style.top = '50%';
+        pickup.style.left = '0%';
+        this.bot.appendChild(pickup);
+        this.pickUps.push(board.board_divs[y][x]);
+        board.div.removeChild(board.board_divs[y][x]);
+        board.board_divs[y][x] = '-';
+    }
+};
+
+Robot.prototype.drop = function () {
+    "use strict";
+    var x, y, pickup, drop;
+    
+    x = this.position[0] - 1;
+    y = this.position[1] - 1;
+    
+    if (this.pickUps.length > 0) {
+        pickup = this.pickUps.pop();
+        if (level[y][x] === 'd') {
+            pickup.style.height = '20px';
+            pickup.style.width = '20px';
+        } else {
+            level[y][x] = 'p';
+            board.board_divs[y][x] = pickup;
+        }
+        board.placeItem(pickup, x + 1, y + 1, true);
+    }
+    if (this.pickUps.length === 0) {
+        this.bot.removeChild(this.bot.querySelector('#butt-dot'));
+    }
 };

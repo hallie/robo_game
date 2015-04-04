@@ -2,6 +2,7 @@ function makeGameBoard(level) {
     "use strict";
     var canvas = new Canvas(null, null, 500, 500);
     setBoard(canvas);
+    setLevel(level);
     return canvas.makeGameBoard(level);
 }
 

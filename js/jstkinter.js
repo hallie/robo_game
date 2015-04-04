@@ -1,3 +1,6 @@
+/*jslint browser: true*/
+/*global Robot, HTMLDivElement*/
+
 /**
  *  This document is meant to be a Javascript version of TKinter
  *  Created on March 23, 2015 by Hallie Lomax

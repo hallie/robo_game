@@ -1,9 +1,12 @@
+/*jslint browser: true*/
+/*global $, console, Circle*/
+
 /**
  * File for handling the creation and the actions of the robot, using what I
  *   defined in jskinter.js
  **/
 
-var board;
+var board, level;
 
 /**
  * Sets the board used in the implementation of board.js equal to whatever
@@ -12,6 +15,14 @@ var board;
 function setBoard(canvas) {
     "use strict";
     board = canvas;
+}
+
+/**
+ * Sets the level that the robot is currently going through.
+ **/
+function setLevel(lev) {
+    "use strict";
+    level = lev;
 }
 
 //Robot
@@ -50,29 +61,37 @@ Robot.prototype.placeBot = function (height, width) {
  **/
 Robot.prototype.canMove = function () {
     "use strict";
-    var x, y;
+    var x, y,
+        px, py;
+    
     x = board.grid_x;
     y = board.grid_y;
+    px = this.position[0] - 1;
+    py = this.position[1] - 1;
     
     switch (this.direction) {
     
     case "left":
-        if (this.position[0] > 0) {
+        console.log(py, px, "left");
+        if ((px > 0) && (level[py][px - 1] !== '*')) {
             return true;
         }
         break;
     case "right":
-        if (this.position[0] < x.length) {
+        console.log(py, px + 1, "right");
+        if ((px < x.length) && (level[py][px + 1] !== '*')) {
             return true;
         }
         break;
     case "up":
-        if (this.position[1] > 0) {
+        console.log(py - 1, px, "up");
+        if ((py > 0) && (level[py - 1][px] !== '*')) {
             return true;
         }
         break;
     default:
-        if (this.position[1] < y.length) {
+        console.log(py + 1, px, "down");
+        if ((py < y.length) && (level[py + 1][px] !== '*')) {
             return true;
         }
     }
@@ -96,26 +115,26 @@ Robot.prototype.moveForward = function () {
     switch (this.direction) {
     
     case "left":
-        if (this.position[0] < x.length - 1) {
+        if (this.canMove()) {
             $(this.bot).animate({left: '-=' + sx.css_px()}, 500);
             this.position[0] -= 1;
         }
         break;
     case "right":
-        if (this.position[0] > 0) {
+        if (this.canMove()) {
             $(this.bot).animate({left: '+=' + sx.css_px()}, 500);
             this.position[0] += 1;
         }
         break;
     case "up":
-        if (this.position[1] < y.length - 1) {
-            $(this.bot).animate({left: '-=' + sx.css_px()}, 500);
+        if (this.canMove()) {
+            $(this.bot).animate({top: '-=' + sx.css_px()}, 500);
             this.position[1] -= 1;
         }
         break;
     default:
-        if (this.position[1] > 0) {
-            $(this.bot).animate({left: '+=' + sx.css_px()}, 500);
+        if (this.canMove()) {
+            $(this.bot).animate({top: '+=' + sx.css_px()}, 500);
             this.position[1] += 1;
         }
     }
@@ -128,7 +147,7 @@ Robot.prototype.turnRight = function () {
     var d, deg;
     
     d = directions.indexOf(this.direction);
-    d = (d + 1) % 4;
+    d = Math.abs(d + 1) % 4;
     deg = d * 90;
     this.direction = directions[d];
     this.bot.rotateClockwise(deg);
@@ -139,7 +158,7 @@ Robot.prototype.turnLeft = function () {
     var d, deg;
     
     d = directions.indexOf(this.direction);
-    d = (d + 1) % 4;
+    d = (d + 3) % 4;
     deg = d * 90;
     this.direction = directions[d];
     this.bot.rotateClockwise(deg);
@@ -150,7 +169,7 @@ Robot.prototype.turnAround = function () {
     var d, deg;
     
     d = directions.indexOf(this.direction);
-    d = (d + 1) % 4;
+    d = (d + 2) % 4;
     deg = d * 90;
     this.direction = directions[d];
     this.bot.rotateClockwise(deg);

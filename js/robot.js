@@ -67,31 +67,34 @@ Robot.prototype.canMove = function () {
     
     x = board.grid_x;
     y = board.grid_y;
+    
+    console.log(this.position);
+    
     px = this.position[0] - 1;
     py = this.position[1] - 1;
     
+	console.log(this.direction);
+	
     switch (this.direction) {
     
     case "left":
-        console.log(py, px, "left");
         if ((px > 0) && (level[py][px - 1] !== '*')) {
             return true;
         }
         break;
     case "right":
-        console.log(py, px + 1, "right");
-        if ((px < x.length) && (level[py][px + 1] !== '*')) {
+        console.log(px, py);
+        if ((px < x.length - 1) && (level[py][px + 1] !== '*')) {
             return true;
         }
         break;
     case "up":
-        console.log(py - 1, px, "up");
         if ((py > 0) && (level[py - 1][px] !== '*')) {
             return true;
         }
         break;
     default:
-        console.log(py + 1, px, "down");
+        console.log(px, py);
         if ((py < y.length) && (level[py + 1][px] !== '*')) {
             return true;
         }
@@ -214,8 +217,10 @@ Robot.prototype.drop = function () {
             board.board_divs[y][x] = pickup;
         }
         board.placeItem(pickup, x + 1, y + 1, true);
+        
+        if (this.pickUps.length === 0) {
+            this.bot.removeChild(this.bot.querySelector('#butt-dot'));
+        }
     }
-    if (this.pickUps.length === 0) {
-        this.bot.removeChild(this.bot.querySelector('#butt-dot'));
-    }
+    console.log(this.pickUps.length);
 };

@@ -1,28 +1,43 @@
+<!DOCTYPE html>
 <html>
     <head>
+	<meta charset="utf-8">
 	<title>Robot</title>
         <link rel="stylesheet" href="css/index_style.css"/>
     </head>
     <body>
+		<!-- divs -->
         <div id="wrap"></div>
         <div id="not-wrap">
-            <h1>Instructions</h1>
-            <h3>To move the bot:</h3>
-            <ul>
-                <li>Press "up" arrow to move forward</li>
-                <li>Press "left" arrow to turn left</li>
-                <li>Press "right" arrow to turn right</li>
-                <li>Press "down" arrow to turn around</li>
-                <br>
-                <li>Press "p" to pick up items</li>
-                <li>Press "d" to drop items</li>
-            </ul>
-        </div>
+			<div id="blocklyDiv" style="height: 100%; width: 600px;"></div>
+			<xml id="toolbox" style="display: none">
+				<block type="controls_if"></block>
+				<block type="logic_compare"></block>
+				<block type="controls_repeat_ext"></block>
+				<block type="math_number"></block>
+				<block type="math_arithmetic"></block>
+				<block type="text"></block>
+				<block type="text_print"></block>
+		  	</xml>
+		</div>
+		
+		<!-- JS -->
         <script type="text/javascript" src="js/assets/jquery-2.1.3.min.js"></script>
         <script type="text/javascript" src="js/assets/jquery-2.1.3.js"></script>
+		<!-- Robot Script -->
         <script type="text/javascript" src="js/jstkinter.js"></script>
         <script type="text/javascript" src="js/robot.js"></script>
         <script type="text/javascript" src="js/board.js"></script>
         <script type="text/javascript" src="js/test.js"></script>
+		<!-- Blockly -->
+		<script src="js/blockly/blockly_compressed.js"></script>
+  		<script src="js/blockly/blocks_compressed.js"></script>
+  		<script src="js/blockly/msg/js/en.js"></script>
+		<script>
+			var workspace = Blockly.inject('blocklyDiv',
+      			{
+				toolbox: document.getElementById('toolbox')
+			});
+  		</script>
     </body>
 </html>

@@ -25,7 +25,13 @@ function setLevel(lev) {
     level = lev;
 }
 
-//Robot
+/**
+ * @class Robot
+ * @type {Object}
+ * @property {HTMLDivElement} bot - The body of the bot as it appears on screen
+ * @property {String} direction - The direction the bot is initially facing.
+ * @property {List[HTMLDivElement]} pickUps - The html for the pickUps it holds.
+ **/
 function Robot() {
     "use strict";
     var body, left_eye, right_eye;
@@ -58,7 +64,9 @@ Robot.prototype.placeBot = function (height, width) {
 
 
 /**
- * Checks if the robot can move forward
+ * Checks if the robot can move forward by comparing its position to both
+ *   the dimensions of the board and the immovable objects said to be placed
+ *   on it. Uses the dircetion the bot is facing in the switch statement.
  **/
 Robot.prototype.canMove = function () {
     "use strict";
@@ -68,12 +76,8 @@ Robot.prototype.canMove = function () {
     x = board.grid_x;
     y = board.grid_y;
     
-    console.log(this.position);
-    
     px = this.position[0] - 1;
     py = this.position[1] - 1;
-    
-	console.log(this.direction);
 	
     switch (this.direction) {
     
@@ -83,7 +87,6 @@ Robot.prototype.canMove = function () {
         }
         break;
     case "right":
-        console.log(px, py);
         if ((px < x.length - 1) && (level[py][px + 1] !== '*')) {
             return true;
         }
@@ -94,7 +97,6 @@ Robot.prototype.canMove = function () {
         }
         break;
     default:
-        console.log(px, py);
         if ((py < y.length) && (level[py + 1][px] !== '*')) {
             return true;
         }
@@ -188,12 +190,16 @@ Robot.prototype.pickUp = function () {
     
     if (level[y][x] === 'p') {
         level[y][x] = '-';
-        pickup = new Circle(5, 'blue');
-        pickup.setAttribute('id', 'butt-dot');
-        pickup.style.position = 'absolute';
-        pickup.style.top = '50%';
-        pickup.style.left = '0%';
-        this.bot.appendChild(pickup);
+		//Only appends one dot to the butt of the bot
+		//Makes removal simpler
+		if (this.pickUps.length === 0) {
+        	pickup = new Circle(5, 'blue');
+        	pickup.setAttribute('id', 'butt-dot');
+        	pickup.style.position = 'absolute';
+        	pickup.style.top = '50%';
+        	pickup.style.left = '0%';
+        	this.bot.appendChild(pickup);
+		}
         this.pickUps.push(board.board_divs[y][x]);
         board.div.removeChild(board.board_divs[y][x]);
         board.board_divs[y][x] = '-';

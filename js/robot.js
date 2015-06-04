@@ -162,7 +162,7 @@ Robot.prototype.moveForward = function () {
 var directions = ['right', 'down', 'left', 'up'];
 
 /**
- * @function turnRight - Function to make the robot turn clockwise 45 degrees.
+ * @function turnRight - Function to make the robot turn clockwise 90 degrees.
  * @memberof Robot
  **/
 Robot.prototype.turnRight = function () {
@@ -176,17 +176,10 @@ Robot.prototype.turnRight = function () {
     this.bot.rotateClockwise(deg);
 };
 
-Robot.prototype.turnLeft = function () {
-    "use strict";
-    var d, deg;
-    
-    d = directions.indexOf(this.direction);
-    d = (d + 3) % 4;
-    deg = d * 90;
-    this.direction = directions[d];
-    this.bot.rotateClockwise(deg);
-};
-
+/**
+ * @function turnAround - Function to make the robot turn clockwise 180 degrees.
+ * @memberof Robot
+ **/
 Robot.prototype.turnAround = function () {
     "use strict";
     var d, deg;
@@ -198,6 +191,28 @@ Robot.prototype.turnAround = function () {
     this.bot.rotateClockwise(deg);
 };
 
+/**
+ * @function turnLeft - Function to make the robot turn clockwise 270 degrees.
+ *  Mimics the turning of -90 degrees, but makes use of the turnRight function.
+ * @memberof Robot
+ **/
+Robot.prototype.turnLeft = function () {
+    "use strict";
+    var d, deg;
+    
+    d = directions.indexOf(this.direction);
+    d = (d + 3) % 4;
+    deg = d * 90;
+    this.direction = directions[d];
+    this.bot.rotateClockwise(deg);
+};
+
+/**
+ * @function pickUp - Function to "pick up" a pick-up if the robot is over it.
+ *   Removes the item from the boar. Appends a tiny version of it to the
+ *   back of the bot if it isn't already holding one.
+ * @memberof Robot
+ **/
 Robot.prototype.pickUp = function () {
     "use strict";
     var x, y, pickup;
@@ -223,6 +238,12 @@ Robot.prototype.pickUp = function () {
     }
 };
 
+/**
+ * @function drop - Function that drops a pick-up onto the board if the robot
+ *   is currently holding one. Removes the dot from the robot's butt if it
+ *   drops all of its pick-ups.
+ * @memberof Robot
+ **/
 Robot.prototype.drop = function () {
     "use strict";
     var x, y, pickup, drop;

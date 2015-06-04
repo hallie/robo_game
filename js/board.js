@@ -34,7 +34,7 @@ Canvas.prototype.makeGameBoard = function (level) {
                 board_x.push(pickup);
                 break;
                     
-                //Places the drop box
+            //Places the drop box
             case 'd':
                 drop = new Square(30, 'grey');
                 this.placeItem(drop, y, x, true);
@@ -47,6 +47,15 @@ Canvas.prototype.makeGameBoard = function (level) {
                 this.placeItem(block, y, x, true);
                 board_x.push('*');
                 break;
+					
+			//End game block
+			case 'e':
+				block = new Square(30, 'red');
+				this.placeItem(block, y, x, true);
+				board_x.push('e');
+				break;
+					
+			//Makes a dash (empty) by default
             default:
                 board_x.push('-');
                 break;

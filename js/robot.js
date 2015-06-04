@@ -2,15 +2,15 @@
 /*global $, console, Circle*/
 
 /**
- * File for handling the creation and the actions of the robot, using what I
+ * File for handling the creation and the actions of the robot, using what was
  *   defined in jskinter.js
  **/
 
 var board, level;
 
 /**
- * Sets the board used in the implementation of board.js equal to whatever
- *   canvas is passed through this function.
+ * @function setBoard - Sets the board used in the implementation of board.js
+ *   equal to whatever canvas is passed through this function.
  **/
 function setBoard(canvas) {
     "use strict";
@@ -56,6 +56,13 @@ function Robot() {
     this.pickUps = [];
 }
 
+/**
+ * @function placeBot - Function to put bot on the board
+ * @memberof Robot
+ * @param {number} height - The y position of the robot on the board.
+ * @param {number} width - The x position of the robot on the board.
+ * @property {number, number} postion - The x and y coordinates of the bot.
+ **/
 Robot.prototype.placeBot = function (height, width) {
     "use strict";
     this.position = [height, width];
@@ -64,9 +71,12 @@ Robot.prototype.placeBot = function (height, width) {
 
 
 /**
- * Checks if the robot can move forward by comparing its position to both
- *   the dimensions of the board and the immovable objects said to be placed
- *   on it. Uses the dircetion the bot is facing in the switch statement.
+ * @function canMove - Checks if the robot can move forward by comparing its
+ *    position to both the dimensions of the board and the immovable objects
+ *    said to be placed on it. Uses the dircetion the bot is facing in the
+ *    switch statement.
+ * @memberof Robot
+ * @return {boolean}
  **/
 Robot.prototype.canMove = function () {
     "use strict";
@@ -102,11 +112,13 @@ Robot.prototype.canMove = function () {
         }
     }
     
-    return false;
+    return false; //Bot cannot move forward
 };
 
 /**
- * Function for moving the robot 'forward' to the next point in the grid.
+ * @function moveForward - Function for moving the robot 'forward' to the
+ *   next point in the grid.
+ * @memberof Robot
  **/
 Robot.prototype.moveForward = function () {
     "use strict";
@@ -146,8 +158,13 @@ Robot.prototype.moveForward = function () {
     }
 };
 
+//List of the directions in clockwise order, starting with right.
 var directions = ['right', 'down', 'left', 'up'];
 
+/**
+ * @function turnRight - Function to make the robot turn clockwise 45 degrees.
+ * @memberof Robot
+ **/
 Robot.prototype.turnRight = function () {
     "use strict";
     var d, deg;

@@ -76,12 +76,14 @@ Robot.prototype.placeBot = function (height, width) {
  *    said to be placed on it. Uses the dircetion the bot is facing in the
  *    switch statement.
  * @memberof Robot
+ * @param {string[opt=this.direction]} direction - The direction to check in.
  * @return {boolean}
  **/
-Robot.prototype.canMove = function () {
+Robot.prototype.canMove = function (direction) {
     "use strict";
     var x, y,
-        px, py;
+        px, py,
+		dir = direction || this.direction;
     
     x = board.grid_x;
     y = board.grid_y;
@@ -89,7 +91,7 @@ Robot.prototype.canMove = function () {
     px = this.position[0] - 1;
     py = this.position[1] - 1;
 	
-    switch (this.direction) {
+    switch (dir) {
     
     case "left":
         if ((px > 0) && (level[py][px - 1] !== '*')) {
@@ -160,6 +162,40 @@ Robot.prototype.moveForward = function () {
 
 //List of the directions in clockwise order, starting with right.
 var directions = ['right', 'down', 'left', 'up'];
+
+/**
+ * @function canMoveForward - Checks to make sure the robot can still move in
+ *   the direction it is currently facing.
+ * @memberof Robot
+ * @return {boolean}
+ **/
+Robot.prototype.canMoveForward = function () {
+	return this.canMove();
+};
+
+/**
+ * @function canMoveLeft - Checks to make sure the robot can move to the left of
+ *   the direction it is currently facing.
+ * @memberof Robot
+ * @return {boolean}
+ **/
+Robot.prototype.canMoveLeft = function () {
+	var d = directions.indexOf(this.direction);
+	d = (d + 3) % 4;
+	return this.canMove(directions[d]);
+};
+
+/**
+ * @function canMoveRight - Checks to make sure the robot can move to the right
+ *   of the direction it is currently facing.
+ * @memberof Robot
+ * @return {boolean}
+ **/
+Robot.prototype.canMoveRight = function () {
+	var d = directions.indexOf(this.direction);
+	d = (d + 1) % 4;
+	return this.canMove(directions[d]);
+};
 
 /**
  * @function turnRight - Function to make the robot turn clockwise 90 degrees.

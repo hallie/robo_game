@@ -33,11 +33,15 @@
 		<script src="js/blockly/blockly_compressed.js"></script>
   		<script src="js/blockly/blocks_compressed.js"></script>
   		<script src="js/blockly/msg/js/en.js"></script>
+		<script src="js/custom_robot_blocks.js"></script>
 		<script>
-			var workspace = Blockly.inject('blocklyDiv',
-      			{
-				toolbox: document.getElementById('toolbox')
-			});
+			var toolbox = '<xml>';
+			toolbox +=    '  <block type="controls_if"></block>';
+			toolbox +=    '  <block type="controls_whileUntil"></block>';
+			toolbox +=    '  <block type="robot_turn"></blocks>';
+			toolbox +=    '</xml>';
+			var workspace = Blockly.inject(
+				'blocklyDiv', {toolbox: toolbox});
   		</script>
     </body>
 </html>

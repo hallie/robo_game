@@ -108,6 +108,9 @@ $(document).ready(function () {
         case 40:
             robot.turnAround();
             break;
+		default:
+			console.log("Left:", robot.canMoveLeft());
+			console.log("Right:", robot.canMoveRight());
 		}
 	});
 });

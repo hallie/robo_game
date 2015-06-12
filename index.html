@@ -9,16 +9,24 @@
 		<!-- divs -->
         <div id="wrap"></div>
         <div id="not-wrap">
-			<div id="blocklyDiv" style="height: 100%; width: 100%;"></div>
-			<xml id="toolbox" style="display: none">
-				<block type="controls_if"></block>
-				<block type="controls_whileUntil"></block>
-				<block type="controls_repeat_ext"></block>
-				<block type="math_number"></block>
-				<block type="math_arithmetic"></block>
-				<block type="text"></block>
-				<block type="text_print"></block>
-		  	</xml>
+			<!--div id="blocklyDiv" style="height: 100%; width: 100%;"></div-->
+			<div>
+				Use the up arrow key to move the robot forward.
+				Use the left and right arrow keys to turn.
+				Press "p" to pick up an object.
+				Press "d" to drop it.
+			</div>
+			<form>
+				Levels: <br>
+				<input type="radio" value="1"/>1<br>
+				<input type="radio" value="2"/>2<br>
+				<input type="radio" value="3"/>3<br>
+				<input type="radio" value="4"/>4<br>
+				<input type="radio" value="5"/>5<br>
+				<input type="radio" value="6"/>6<br>
+				<input type="radio" value="7"/>7<br>
+				<input type="radio" value="8"/>8<br>
+			</form>
 		</div>
 		
 		<!-- JS -->
@@ -36,9 +44,19 @@
 		<script src="js/custom_robot_blocks.js"></script>
 		<script>
 			var toolbox = '<xml>';
-			toolbox +=    '  <block type="controls_if"></block>';
-			toolbox +=    '  <block type="controls_whileUntil"></block>';
-			toolbox +=    '  <block type="robot_turn"></blocks>';
+			toolbox +=    '  <category name="Logic">';
+			toolbox +=    '      <block type="controls_if"></block>';
+			toolbox +=    '      <block type="controls_whileUntil"></block>';
+			toolbox +=    '  </category>';
+			toolbox +=    '  <category name="Booties"></category>';
+			toolbox +=    '  <sep></sep>';
+			toolbox +=    '  <category name="Robot Logic">';
+			toolbox +=    '      <block type="robot_can_move"></blocks>';
+			toolbox +=    '  </category>';
+			toolbox +=    '  <sep></sep>';
+			toolbox +=    '  <category name="Robot Action">';
+			toolbox +=    '      <block type="robot_turn"></blocks>';
+			toolbox +=    '  </category>';
 			toolbox +=    '</xml>';
 			var workspace = Blockly.inject(
 				'blocklyDiv', {toolbox: toolbox});

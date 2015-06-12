@@ -13,7 +13,7 @@ var board, level;
  *   equal to whatever canvas is passed through this function.
  **/
 function setBoard(canvas) {
-    "use strict";
+    'use strict';
     board = canvas;
 }
 
@@ -21,7 +21,7 @@ function setBoard(canvas) {
  * Sets the level that the robot is currently going through.
  **/
 function setLevel(lev) {
-    "use strict";
+    'use strict';
     level = lev;
 }
 
@@ -33,7 +33,7 @@ function setLevel(lev) {
  * @property {List[HTMLDivElement]} pickUps - The html for the pickUps it holds.
  **/
 function Robot() {
-    "use strict";
+    'use strict';
     var body, left_eye, right_eye;
     
     body = new Circle(30, 'green');
@@ -64,7 +64,7 @@ function Robot() {
  * @property {number, number} postion - The x and y coordinates of the bot.
  **/
 Robot.prototype.placeBot = function (height, width) {
-    "use strict";
+    'use strict';
     this.position = [height, width];
     board.placeItem(this, height, width, true);
 };
@@ -80,7 +80,7 @@ Robot.prototype.placeBot = function (height, width) {
  * @return {boolean}
  **/
 Robot.prototype.canMove = function (direction) {
-    "use strict";
+    'use strict';
     var x, y,
         px, py,
 		dir = direction || this.direction;
@@ -123,7 +123,7 @@ Robot.prototype.canMove = function (direction) {
  * @memberof Robot
  **/
 Robot.prototype.moveForward = function () {
-    "use strict";
+    'use strict';
     var x, y, sx, sy;
     
     x = board.grid_x;
@@ -170,6 +170,7 @@ var directions = ['right', 'down', 'left', 'up'];
  * @return {boolean}
  **/
 Robot.prototype.canMoveForward = function () {
+	'use strict';
 	return this.canMove();
 };
 
@@ -180,6 +181,7 @@ Robot.prototype.canMoveForward = function () {
  * @return {boolean}
  **/
 Robot.prototype.canMoveLeft = function () {
+	'use strict';
 	var d = directions.indexOf(this.direction);
 	d = (d + 3) % 4;
 	return this.canMove(directions[d]);
@@ -192,6 +194,7 @@ Robot.prototype.canMoveLeft = function () {
  * @return {boolean}
  **/
 Robot.prototype.canMoveRight = function () {
+	'use strict';
 	var d = directions.indexOf(this.direction);
 	d = (d + 1) % 4;
 	return this.canMove(directions[d]);
@@ -202,7 +205,7 @@ Robot.prototype.canMoveRight = function () {
  * @memberof Robot
  **/
 Robot.prototype.turnRight = function () {
-    "use strict";
+    'use strict';
     var d, deg;
     
     d = directions.indexOf(this.direction);
@@ -217,7 +220,7 @@ Robot.prototype.turnRight = function () {
  * @memberof Robot
  **/
 Robot.prototype.turnAround = function () {
-    "use strict";
+    'use strict';
     var d, deg;
     
     d = directions.indexOf(this.direction);
@@ -233,7 +236,7 @@ Robot.prototype.turnAround = function () {
  * @memberof Robot
  **/
 Robot.prototype.turnLeft = function () {
-    "use strict";
+    'use strict';
     var d, deg;
     
     d = directions.indexOf(this.direction);
@@ -244,13 +247,70 @@ Robot.prototype.turnLeft = function () {
 };
 
 /**
+ * @function isAtPickUp - Checks to see if the robot is over a pick-up location.
+ * @memberof Robot
+ * @return {boolean}
+ **/
+Robot.prototype.isAtPickUp = function () {
+	'use strict';
+	var x, y;
+    
+    x = this.position[0] - 1;
+    y = this.position[1] - 1;
+    
+    if (level[y][x] === 'p') {
+		return true;
+	}
+	
+	return false;
+};
+
+/**
+ * @function isAtDeposit - Checks to see if the robot is over a drop-off location.
+ * @memberof Robot
+ * @return {boolean}
+ **/
+Robot.prototype.isAtDeposit = function () {
+	'use strict';
+	var x, y;
+    
+    x = this.position[0] - 1;
+    y = this.position[1] - 1;
+    
+    if (level[y][x] === 'd') {
+		return true;
+	}
+	
+	return false;
+};
+
+/**
+ * @function isAtEnd - Checks to see if the robot is over the end square.
+ * @memberof Robot
+ * @return {boolean}
+ **/
+Robot.prototype.isAtEnd = function () {
+	'use strict';
+	var x, y;
+    
+    x = this.position[0] - 1;
+    y = this.position[1] - 1;
+    
+    if (level[y][x] === 'e') {
+		return true;
+	}
+	
+	return false;
+};
+
+/**
  * @function pickUp - Function to "pick up" a pick-up if the robot is over it.
  *   Removes the item from the boar. Appends a tiny version of it to the
  *   back of the bot if it isn't already holding one.
  * @memberof Robot
  **/
 Robot.prototype.pickUp = function () {
-    "use strict";
+    'use strict';
     var x, y, pickup;
     
     x = this.position[0] - 1;
@@ -261,12 +321,12 @@ Robot.prototype.pickUp = function () {
 		//Only appends one dot to the butt of the bot
 		//Makes removal simpler
 		if (this.pickUps.length === 0) {
-        	pickup = new Circle(5, 'blue');
-        	pickup.setAttribute('id', 'butt-dot');
-        	pickup.style.position = 'absolute';
-        	pickup.style.top = '50%';
-        	pickup.style.left = '0%';
-        	this.bot.appendChild(pickup);
+			pickup = new Circle(5, 'blue');
+			pickup.setAttribute('id', 'butt-dot');
+			pickup.style.position = 'absolute';
+			pickup.style.top = '50%';
+			pickup.style.left = '0%';
+			this.bot.appendChild(pickup);
 		}
         this.pickUps.push(board.board_divs[y][x]);
         board.div.removeChild(board.board_divs[y][x]);
@@ -275,13 +335,28 @@ Robot.prototype.pickUp = function () {
 };
 
 /**
+ * @function hasPickUps - Checks to see if the robot is holding anything.
+ * @memberof Robot
+ * @return {boolean}
+ **/
+Robot.prototype.hasPickUps = function () {
+	'use strict';
+	if (this.pickUps.length === 0) {
+		return false;
+	}
+	
+	return true;
+};
+
+
+/**
  * @function drop - Function that drops a pick-up onto the board if the robot
  *   is currently holding one. Removes the dot from the robot's butt if it
  *   drops all of its pick-ups.
  * @memberof Robot
  **/
 Robot.prototype.drop = function () {
-    "use strict";
+    'use strict';
     var x, y, pickup, drop;
     
     x = this.position[0] - 1;
@@ -298,9 +373,9 @@ Robot.prototype.drop = function () {
         }
         board.placeItem(pickup, x + 1, y + 1, true);
         
-        if (this.pickUps.length === 0) {
+        if (this.hasPickUps()) {
+			console.log(this.pickUps.length);
             this.bot.removeChild(this.bot.querySelector('#butt-dot'));
         }
     }
-    console.log(this.pickUps.length);
 };

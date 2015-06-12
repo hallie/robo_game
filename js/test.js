@@ -3,6 +3,8 @@
 /*jslint browser: true*/
 /*global $, console, makeGameBoard*/
 
+var current_level = 1;
+
 
 var level_1 = [
 		['-', 'r', '-', '-'],
@@ -35,12 +37,12 @@ var level_1 = [
 	],
 	
 	level_5 = [
-    	['r', '-', '-', '-', '-', '-'],
-    	['*', '*', '*', '*', '-', '*'],
-    	['-', '-', '-', '-', 'p', '-'],
-    	['-', '-', '-', '-', 'p', '-'],
-    	['-', '-', '-', '-', '-', '-'],
-    	['-', 'e', '-', '-', 'd', '-']
+		['r', '-', '-', '-', '-', '-'],
+		['*', '*', '*', '*', '-', '*'],
+		['-', '-', '-', '-', 'p', '-'],
+		['-', '-', '-', '-', 'p', '-'],
+		['-', '-', '-', '-', '-', '-'],
+		['-', 'e', '-', '-', 'd', '-']
 	],
 	
 	level_6 = [
@@ -79,7 +81,7 @@ var robot;
 
 $(document).ready(function () {
     "use strict";
-    robot = makeGameBoard(level_8);
+    robot = makeGameBoard(level_1);
 });
 
 $(document).ready(function () {
@@ -109,8 +111,16 @@ $(document).ready(function () {
             robot.turnAround();
             break;
 		default:
-			console.log("Left:", robot.canMoveLeft());
-			console.log("Right:", robot.canMoveRight());
+			break;
 		}
 	});
+});
+
+$(document).ready(function () {
+	'use strict';
+	$('input:radio').change(
+		function () {
+			robot = makeGameBoard(level_2);
+		}
+	);
 });

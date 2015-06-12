@@ -1,20 +1,40 @@
-Blockly.Blocks['robot_turn'] = {
-	init: function() {
-		this.setHelpUrl('http://www.example.com/');
+/*global Blockly, console*/
+
+Blockly.Blocks.robot_turn = {
+	init: function () {
+		'use strict';
+		this.setHelpUrl('');
 		this.setColour(270);
 		this.appendDummyInput()
-			.appendField("Turn")
+			.appendField("turn")
 			.appendField(new Blockly.FieldDropdown(
-				[["left", "LEFT"], ["right", "RIGHT"], ["around", "AROUND"]]
+				[
+					["left", "LEFT"],
+					["right", "RIGHT"],
+					["around", "AROUND"]
+				]
 			), "robot_direction");
 		this.setPreviousStatement(true);
 		this.setTooltip('');
 	}
 };
 
-Blockly.JavaScript['robot_turn'] = function(block) {
-  var dropdown_robot_direction = block.getFieldValue('robot_direction');
-  console.log(dropdown_robot_direction);
-  //var code = '...';
-  //return code;
+Blockly.Blocks.robot_can_move = {
+	init: function () {
+		'use strict';
+		this.setHelpUrl('https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#9346z8');
+		this.setColour(160);
+		this.appendDummyInput()
+			.appendField("can move")
+			.appendField(new Blockly.FieldDropdown(
+				[
+					["forward", "FORWARD"],
+					["left", "LEFT"],
+					["right", "RIGHT"]
+			    ]
+			),
+				"robot_direction");
+		this.setOutput(true, "Boolean");
+		this.setTooltip('');
+	}
 };

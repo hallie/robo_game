@@ -1,5 +1,12 @@
-/*global Canvas, Robot, Circle, Square*/
+/*global $, Canvas, Robot, Circle, Square*/
+/*global setBoard, setLevel*/
 
+/**
+ * @function makeGameBoard - Makes the canvas for the game, and then calls
+ *   a function to build the board on the canvas.
+ * @param {Array} level - The matrix for the board.
+ * @return {Robot} bot - The robot for the game.
+ **/
 function makeGameBoard(level) {
     'use strict';
     var canvas = new Canvas(null, null, 500, 500);
@@ -8,6 +15,12 @@ function makeGameBoard(level) {
     return canvas.makeGameBoard(level);
 }
 
+/**
+ * @function makeGameBoard - Constructs the gameboard for the level.
+ * @memberof Canvas
+ * @param {Array} level - The matrix for the board.
+ * @return {Robot} bot - The robot for the game.
+ **/
 Canvas.prototype.makeGameBoard = function (level) {
     //Making the level grided based on the length of the matrix
     'use strict';
@@ -17,9 +30,9 @@ Canvas.prototype.makeGameBoard = function (level) {
     
     //Traversing the matrix to get the layout based on characters
     var bot, drop, pickup, block,
-        x, y;
+        x, y, board_x;
     for (x = 1; x < level.length + 1; x += 1) {
-        var board_x = [];
+        board_x = [];
         for (y = 1; y < level[x - 1].length + 1; y += 1) {
             switch (level[x - 1][y - 1]) {
             //Places the robot
@@ -70,6 +83,11 @@ Canvas.prototype.makeGameBoard = function (level) {
     return bot;
 };
 
+/**
+ * @function destroyGameBoard - Function to remove the current board from the
+ *   the wrapper div.
+ * @memberof Canvas
+ **/
 Canvas.prototype.destroyGameBoard = function () {
 	'use strict';
 	$(this.id).remove();

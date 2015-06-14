@@ -26,12 +26,18 @@ String.prototype.toInt = function () {
 };
 
 /**
- * Function for creating the canvas on which the user will be drawing.
+ * @class Canvas
+ * @type {Object}
  * @param {string} [id='canvas']
  * @param {string} [color='whitesmoke']
  * @param {number} [height=500]
  * @param {number} [width=500]
- * @param {bool} [grid=false]
+ * @param {bool}   [grid=false]
+ *
+ * @property {String} id - The div id.
+ * @property {HTMLDivElement} div - The HTML object.
+ * @property {Array} grid_x - The x components of the grid.
+ * @property {Array} grid_y - The y components of the grid (x component list).
  **/
 function Canvas(id, color, height, width) {
     "use strict";
@@ -65,8 +71,9 @@ function Canvas(id, color, height, width) {
 }
 
 /**
- * Adds a title bar to the canvas
- * @param {string} title
+ * @function makeHeader - Adds a title bar to the canvas.
+ * @memberof Canvas
+ * @param {string} title - The title to put in the div.
  **/
 Canvas.prototype.makeHeader = function (title) {
     "use strict";
@@ -83,9 +90,17 @@ Canvas.prototype.makeHeader = function (title) {
 };
 
 /**
- * Makes the cavas into a grid
+ * @function makeGrid - Makes the cavas into a grid.
  * @param {number} [columns=5]
  * @param {number} [rows=5]
+ *
+ * @propery {bool} isGrid - Tells whether or no the canvas has a grid.
+ * @propery {Array[2]} dimensions - The dimensions of the grid.
+ * @propery {Array[2]} square_size - The dimensions of the grid squares.
+ * @propery {function} addVertLine - A function to add a verticle line to the
+ *   canvas.
+ * @propery {function} addHorLine - A function to add a horizontal line to the
+ *   canvas.
  **/
 Canvas.prototype.makeGrid = function (columns, rows) {
     "use strict";
@@ -154,7 +169,8 @@ Canvas.prototype.makeGrid = function (columns, rows) {
 };
 
 /**
- * Function for removing the grid from the canvas
+ * @function removeGrid - Function for removing the grid from the canvas.
+ * @memberof Canvas
  **/
 Canvas.prototype.removeGrid = function () {
     "use strict";

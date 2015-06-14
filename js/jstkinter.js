@@ -36,6 +36,7 @@ String.prototype.toInt = function () {
 function Canvas(id, color, height, width) {
     "use strict";
     id = id || 'canvas';
+	this.id = id;
     
     function catchCanvasError(param) {
         if (typeof param === 'number') {

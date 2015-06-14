@@ -75,7 +75,10 @@ var level_1 = [
 		['-', '-', '-', '-', '-', '-', '-']
 	];
 
-
+var LEVEL = [
+	level_1, level_2, level_3, level_4,
+	level_5, level_6, level_7, level_8
+];
 
 var robot;
 
@@ -118,9 +121,13 @@ $(document).ready(function () {
 
 $(document).ready(function () {
 	'use strict';
-	$('input:radio').change(
+	$('select').change(
 		function () {
-			robot = makeGameBoard(level_2);
+			robot.boardCanvas.destroyGameBoard();
+			$(robot.bot).remove();
+			current_level = parseInt($('option:selected').text(), 10) - 1;
+			console.log(LEVEL[current_level]);
+			robot = makeGameBoard(LEVEL[current_level]);
 		}
 	);
 });

@@ -1,5 +1,7 @@
+/*global Canvas, Robot, Circle, Square*/
+
 function makeGameBoard(level) {
-    "use strict";
+    'use strict';
     var canvas = new Canvas(null, null, 500, 500);
     setBoard(canvas);
     setLevel(level);
@@ -8,7 +10,7 @@ function makeGameBoard(level) {
 
 Canvas.prototype.makeGameBoard = function (level) {
     //Making the level grided based on the length of the matrix
-    "use strict";
+    'use strict';
     this.makeGrid((level.length - 1), (level[0].length - 1));
     
     this.board_divs = [];
@@ -63,5 +65,12 @@ Canvas.prototype.makeGameBoard = function (level) {
         }
         this.board_divs.push(board_x);
     }
+	
+	bot.boardCanvas = this;
     return bot;
+};
+
+Canvas.prototype.destroyGameBoard = function () {
+	'use strict';
+	$(this.id).remove();
 };

@@ -9,7 +9,9 @@
 var wrap;
 
 /**
- * Converts a number to a px string.
+ * @function css_px - Converts a number to a px string.
+ * @memberof {Number}
+ * @return {String} - The number in string form.
  **/
 Number.prototype.css_px = function () {
     "use strict";
@@ -17,8 +19,11 @@ Number.prototype.css_px = function () {
 };
 
 /**
- * Converts a px string to an integer.
+ * @function toInt - Converts a px string to an integer.
+ * @memberof String
+ * @return {Float} - The string in float form.
  **/
+//TODO: Replace toInt with toFloat
 String.prototype.toInt = function () {
     "use strict";
     var string = this.substr(0, this.length - 2);
@@ -91,6 +96,7 @@ Canvas.prototype.makeHeader = function (title) {
 
 /**
  * @function makeGrid - Makes the cavas into a grid.
+ * @memberof Canvas
  * @param {number} [columns=5]
  * @param {number} [rows=5]
  *
@@ -199,7 +205,8 @@ Canvas.prototype.removeGrid = function () {
 //tkMessageBox
 
 /**
- * Adds an element to the canvas at a given postion.
+ * @function placeItem - Adds an element to the canvas at a given postion.
+ * @memberof Canvas
  * @param {HTMLDivElement} item
  * @param {number} height
  * @param {number} width
@@ -239,7 +246,12 @@ Canvas.prototype.placeItem = function (item, width, height, corner) {
     }
 };
 
-//Circle
+/**
+ * @class Circle
+ * @type {HTMLDivElement}
+ * @param {Integer} [radius=50] - The radius of the circle (in px).
+ * @param {String} [color=red] - The color of the circle.
+ **/
 function Circle(radius, color) {
     "use strict";
     radius = radius || 50;
@@ -253,7 +265,13 @@ function Circle(radius, color) {
     return circle;
 }
 
-//Oval
+/**
+ * @class Oval
+ * @type {HTMLDivElement}
+ * @param {Integer} [x_radius=50] - The horizontal radius of the oval.
+ * @param {Integer} [y_radius=x_radius] - The verticle radius of the oval.
+ * @param {String} [color=red] - The color of the oval.
+ **/
 function Oval(x_radius, y_radius, color) {
     "use strict";
     x_radius = x_radius || 50;
@@ -268,7 +286,12 @@ function Oval(x_radius, y_radius, color) {
     return oval;
 }
 
-//Square
+/**
+ * @class Square
+ * @type {HTMLDivElement}
+ * @param {Integer} [height=50] - The height of the square (also the width).
+ * @param {String} [color=red] - The color of the square.
+ **/
 function Square(height, color) {
     "use strict";
     height = height || 50;
@@ -281,7 +304,13 @@ function Square(height, color) {
     return square;
 }
 
-//Rectangle
+/**
+ * @class Rectangle
+ * @type {HTMLDivElement}
+ * @param {Integer} [height=50] - The height of the rectangle.
+ * @param {Integer} [width=50] - The width of the rectangle.
+ * @param {String} [color=red] - The color of the rectangle.
+ **/
 function Rectangle(height, width, color) {
     "use strict";
     var rectangle = document.createElement('div');
@@ -297,7 +326,11 @@ function Rectangle(height, width, color) {
 //Curve
 //MakeColor
 
-//Rotate
+/**
+ * @function rotateClockwise - A function to rotate a div clockwise.
+ * @memberof HTMLDivElement
+ * @param {Number} degrees - The number of degrees to rotate the div.
+ **/
 HTMLDivElement.prototype.rotateClockwise = function (degrees) {
     "use strict";
     var div = this;
